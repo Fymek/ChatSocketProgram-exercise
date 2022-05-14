@@ -13,6 +13,8 @@ public class MainClient {
     private static void startClientService(String username) throws IOException {
         Socket socket = new Socket("localhost", 2001);
         Client client = new Client(socket, username);
+        client.listenForMessage();
+        client.sendMessage();
     }
 
     public static void main(String[] args) throws InterruptedException {

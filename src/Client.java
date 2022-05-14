@@ -23,6 +23,39 @@ public class Client {
             closeEverything();
         }
     }
+    public void sendMessage() {
+        try {
+
+            System.out.println("Please put new task with format: \"Int Stirng\":");
+            Scanner scanner = new Scanner(System.in);
+            while (socket.isConnected()) {
+
+                String messageToSend = scanner.nextLine();
+                bufferedWriter.write(messageToSend);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+            }
+        } catch (IOException e) {
+            closeEverything();
+        }
+    }
+
+    public void listenForMessage() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String msgFromGroupChat;
+                while (socket.isConnected()) {
+                    try {
+                        msgFromGroupChat = bufferedReader.readLine();
+                        System.out.println(msgFromGroupChat);
+                    } catch (IOException e) {
+                        closeEverything();
+                    }
+                }
+            }
+        }).start();
+    }
     public void closeEverything(){
         try {
             if (bufferedWriter != null) bufferedWriter.close();

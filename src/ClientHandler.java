@@ -40,10 +40,20 @@ public class ClientHandler implements Runnable{
                 messageFromClient = bufferedReader.readLine();
                 if(messageFromClient.equals("")) continue;
                 System.out.println("New task request from user: "+ this.clientUsername);
+                this.sendMessage(messageFromClient);
             }catch (IOException e){
                 closeEverything();
                 break;
             }
+        }
+    }
+    public void sendMessage(String msgContent) {
+        try {
+            bufferedWriter.write(msgContent);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            closeEverything();
         }
     }
     public void removeClientHandler(){clientHandlers.remove(this);}
