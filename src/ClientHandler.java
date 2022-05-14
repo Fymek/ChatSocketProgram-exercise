@@ -56,7 +56,10 @@ public class ClientHandler implements Runnable{
             closeEverything();
         }
     }
-    public void removeClientHandler(){clientHandlers.remove(this);}
+    public void removeClientHandler(){
+        System.out.println(this.clientUsername +  " disconnected.");
+        clientHandlers.remove(this);
+    }
 
     public void closeEverything(){
         removeClientHandler();
