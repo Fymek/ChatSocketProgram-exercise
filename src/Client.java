@@ -10,6 +10,7 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String username;
 
+
     public Client(Socket socket, String username) {
         try {
             this.socket = socket;
@@ -23,13 +24,14 @@ public class Client {
             closeEverything();
         }
     }
+
     public void sendMessage() {
         try {
 
-            System.out.println("Please put new task with format: \"Int Stirng\":");
+            System.out.println("Please put a message and delay after which the message should arrive: ");
             Scanner scanner = new Scanner(System.in);
-            while (socket.isConnected()) {
 
+            while (socket.isConnected()) {
                 String messageToSend = scanner.nextLine();
                 bufferedWriter.write(messageToSend);
                 bufferedWriter.newLine();
@@ -67,5 +69,16 @@ public class Client {
         System.out.println("Connection has been lost");
         exit(1);
     }
+    boolean isInt(String str)
+    {
+        try
+        {
+            Integer.parseInt(str);
+            return true;
 
+        }catch (NumberFormatException e)
+        {
+            return false;
+        }
+    }
 }

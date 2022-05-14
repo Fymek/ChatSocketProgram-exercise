@@ -1,8 +1,10 @@
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketOption;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClientHandler implements Runnable{
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
@@ -40,12 +42,32 @@ public class ClientHandler implements Runnable{
                 messageFromClient = bufferedReader.readLine();
                 if(messageFromClient.equals("")) continue;
                 System.out.println("New task request from user: "+ this.clientUsername);
-                this.sendMessage(messageFromClient);
+                //sendMessage(messageFromClient);
+                sendMessageWithDelay(messageFromClient);
             }catch (IOException e){
                 closeEverything();
                 break;
+            } catch (Exception e) {
+                sendMessage("Failure adding notification. Check the syntax");
             }
         }
+    }
+    public void sendMessageWithDelay(String rawMessage) throws Exception{
+
+        Pattern pattern = Pattern.compile("^\\s?([0-9]+)\\s(.*)");
+        Matcher decodedValues = pattern.matcher(rawMessage);
+        decodedValues.find();
+
+        int messagedelay = Integer.parseInt(decodedValues.group(1));
+        String messageContent = decodedValues.group(2);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                sendMessage(messageContent);
+                System.out.println("task for " + getClientUsername() + " has been sent");
+                timer.cancel();
+            }
+        }, messagedelay);
     }
     public void sendMessage(String msgContent) {
         try {
