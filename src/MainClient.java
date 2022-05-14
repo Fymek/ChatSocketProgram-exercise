@@ -3,6 +3,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class MainClient {
+    static int port = 2001;
     public static String readUserName() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your username for the group chat: ");
@@ -11,13 +12,13 @@ public class MainClient {
     }
 
     private static void startClientService(String username) throws IOException {
-        Socket socket = new Socket("localhost", 2001);
+        Socket socket = new Socket("localhost", port);
         Client client = new Client(socket, username);
         client.listenForMessage();
         client.sendMessage();
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args){
         String username = readUserName();
 
             try {

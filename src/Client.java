@@ -69,16 +69,5 @@ public class Client {
         System.out.println("Connection has been lost");
         exit(1);
     }
-    boolean isInt(String str)
-    {
-        try
-        {
-            Integer.parseInt(str);
-            return true;
 
-        }catch (NumberFormatException e)
-        {
-            return false;
-        }
-    }
 }
